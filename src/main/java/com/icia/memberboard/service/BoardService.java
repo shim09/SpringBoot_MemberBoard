@@ -23,5 +23,5 @@ public interface BoardService {
 
     Page<BoardPagingDTO> paging(Pageable pageable);
 
-    List<BoardDetailDTO> search(BoardSearchDTO boardSearchDTO);
+    Page<BoardPagingDTO> search(BoardSearchDTO boardSearchDTO, Pageable pageable);
 }

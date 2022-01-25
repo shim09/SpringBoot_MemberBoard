@@ -106,20 +106,22 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<BoardDetailDTO> search(BoardSearchDTO boardSearchDTO) {
+    public Page<BoardPagingDTO> search(BoardSearchDTO boardSearchDTO, Pageable pageable) {
         if(boardSearchDTO.getSelect().equals("boardTitle")){
-            List<BoardEntity> boardEntityList = br.findByBoardTitleContaining(boardSearchDTO.getKeyword());
-            List<BoardDetailDTO> boardList = new ArrayList<>();
-            for (BoardEntity boardEntity : boardEntityList) {
-                boardList.add(BoardDetailDTO.toBoardDetailDTO(boardEntity));
-            }
+            Page<BoardEntity> boardEntityList = br.findByBoardTitleContaining(boardSearchDTO.getKeyword(), PageRequest.of(pageable.getPageNumber()-1, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+            Page<BoardPagingDTO> boardList = boardEntityList.map(
+                    board -> new BoardPagingDTO(board.getId(),
+                            board.getBoardWriter(),
+                            board.getBoardTitle())
+            );
             return boardList;
         } else {
-            List<BoardEntity> boardEntityList = br.findByBoardWriterContaining(boardSearchDTO.getKeyword());
-            List<BoardDetailDTO> boardList = new ArrayList<>();
-            for (BoardEntity boardEntity : boardEntityList) {
-                boardList.add(BoardDetailDTO.toBoardDetailDTO(boardEntity));
-            }
+            Page<BoardEntity> boardEntityList = br.findByBoardWriterContaining(boardSearchDTO.getKeyword(), PageRequest.of(pageable.getPageNumber()-1, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+            Page<BoardPagingDTO> boardList = boardEntityList.map(
+                    board -> new BoardPagingDTO(board.getId(),
+                            board.getBoardWriter(),
+                            board.getBoardTitle())
+            );
             return boardList;
         }
     }

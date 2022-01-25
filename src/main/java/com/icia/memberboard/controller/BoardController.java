@@ -94,9 +94,17 @@ public class BoardController {
     }
 
     @GetMapping("/search")
-    public String search(@ModelAttribute BoardSearchDTO boardSearchDTO, Model model){
-        List<BoardDetailDTO> boardDetailDTOList = bs.search(boardSearchDTO);
+    public String search(@PageableDefault(page =1) Pageable pageable, @ModelAttribute BoardSearchDTO boardSearchDTO, Model model){
+
+        Page<BoardPagingDTO> boardDetailDTOList = bs.search(boardSearchDTO, pageable);
+        System.out.println("boardDetailDTOList.toString() = " + boardDetailDTOList.toString());
         model.addAttribute("boardList", boardDetailDTOList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + PagingConst.BLOCK_LIMIT - 1) < boardDetailDTOList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : boardDetailDTOList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("select", boardSearchDTO.getSelect());
+        model.addAttribute("keyword", boardSearchDTO.getKeyword());
         return "board/search";
     }
 

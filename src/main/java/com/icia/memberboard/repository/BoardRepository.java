@@ -1,12 +1,14 @@
 package com.icia.memberboard.repository;
 
 import com.icia.memberboard.entity.BoardEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
-    List<BoardEntity> findByBoardTitleContaining(String keyword);
+    Page<BoardEntity> findByBoardTitleContaining(String keyword, Pageable pageable);
 
-    List<BoardEntity> findByBoardWriterContaining(String keyword);
+    Page<BoardEntity> findByBoardWriterContaining(String keyword, Pageable pageable);
 }

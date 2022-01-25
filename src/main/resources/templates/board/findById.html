@@ -5,6 +5,25 @@
     <title>Title</title>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 </head>
+
+    <script>
+        function deleteById(commentId){
+            const reqUrl = "/comment/"+commentId;
+            const boardId = '[[${board.boardId}]]';
+            const successUrl = '/board/' + boardId;
+            $.ajax({
+                type: 'delete',
+                url: reqUrl,
+                success: function (){
+                    location.href= successUrl;
+                },
+                error:function (){
+                    alert("실패!")
+                }
+            });
+        }
+
+    </script>
 <body>
 
 
@@ -52,6 +71,7 @@
             <th>작성자</th>
             <th>내용</th>
             <th>작성시간</th>
+            <th>댓글 삭제</th>
         </tr>
         </thead>
         <tbody>
@@ -60,6 +80,9 @@
             <td th:text="${comment.getCommentWriter()}"></td>
             <td th:text="${comment.getCommentContents()}"></td>
             <td th:text="${comment.getCreateTime()}"></td>
+            <td th:if="${comment.getCommentWriter().equals(session.loginEmail)}">
+                <button th:onclick="deleteById([[${comment.getCommentId}]])">댓글 삭제</button>
+            </td>
         </tr>
         </tbody>
     </table>
