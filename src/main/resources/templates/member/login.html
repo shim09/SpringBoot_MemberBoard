@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .field-error{
+            color: red;
+        }
+
+    </style>
+
+</head>
+<body>
+<h2> 로그인 페이지 </h2>
+<form action = "/member/login" method="post" th:object="${login}">
+    <div th:if="${#fields.hasGlobalErrors()}">
+        <p class="field-error" th:each="err: ${#fields.globalErrors()}" th:text="${err}">글로벌오류</p>
+    </div>
+    Email : <input type ="text" th:field="*{memberEmail}" placeholder="아이디를 입력하세요" ><br>
+    <p th:if="${#fields.hasErrors('memberEmail')}" th:errors="*{memberEmail}" th:errorclass="field-error"></p>
+    PW : <input type ="password" th:field="*{memberPassword}" placeholder="비밀번호를 입력하세요"><br>
+    <p th:if="${#fields.hasErrors('memberPassword')}" th:errors="*{memberPassword}" th:errorclass="field-error"></p>
+    <input type ="submit" value="Login">
+</form>
+
+</body>
+</html>

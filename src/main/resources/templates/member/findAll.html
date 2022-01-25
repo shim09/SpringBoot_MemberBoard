@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <script>
+        function deleteById(memberId){
+            const reqUrl = "/member/"+memberId;
+
+            $.ajax({
+                type: 'delete',
+                url: reqUrl,
+                success: function (result){
+                    location.href='/member/';
+                },
+                error:function (){
+                    alert("실패!")
+                }
+            });
+        }
+
+   </script>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>이메일</th>
+        <th>이름</th>
+        <th>휴대폰번호</th>
+        <th>사진</th>
+        <th>회원삭제(ajax)</th>
+        <th>회원삭제(get)</th>
+        <th>회원조회(ajax)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="member: ${memberList}">
+        <td th:text="${member.memberId}"></td>
+        <td><a th:href="@{|/member/${member.memberId}|}" th:text="${member.memberEmail}"></a></td>
+        <td th:text="${member.memberName}"></td>
+        <td th:text="${member.memberPhone}"></td>
+        <td><img th:src="@{/static/upload/} + ${member.memberImageName}"> </td>
+        <td><button th:onclick="deleteById([[${member.memberId}]])">삭제</button></td>
+        <td><a th:href="@{|/member/delete/${member.memberId}|}">삭제(get)</a></td>
+
+    </tr>
+    </tbody>
+
+</table>
+</body>
+</html>

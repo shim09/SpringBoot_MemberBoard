@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+
+
+<table>
+
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>이름</th>
+        <th>작성 시간</th>
+        <th>수정</th>
+        <th>수정(ajax)</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${board.boardId}"></td>
+        <td th:text="${board.boardTitle}"></td>
+        <td th:text="${board.boardWriter}"></td>
+        <td th:text="${board.boardContents}"></td>
+        <td th:text="${board.boardTime}"></td>
+        <<td><a th:href="@{|/board/update/${board.boardId}|}">수정(post)</a></td>
+        <td><a th:href="@{|/board/delete/${board.boardId}|}" th:if="${board.boardWriter.equals(session.loginEmail)}">삭제</a></td>
+        <td><a th:href="@{|/board/delete/${board.boardId}|}" th:if="${session.loginEmail.equals('shim')}">삭제</a></td>
+
+
+    </tr>
+    </tbody>
+</table>
+
+<div id="comment-write">
+    <input type="text" id="commentWriter" placeholder="작성자" th:value="${session.loginEmail}" readonly><br>
+    <input type="text" id="commentContents" placeholder="내용"><br>
+    <button id="comment-write-btn">댓글 등록</button>
+</div>
+
+<div id="comment-area">
+    <table>
+        <thead >
+        <tr>
+            <th>댓글번호</th>
+            <th>작성자</th>
+            <th>내용</th>
+            <th>작성시간</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment: ${comment}">
+            <td th:text="${comment.getCommentId()}"></td>
+            <td th:text="${comment.getCommentWriter()}"></td>
+            <td th:text="${comment.getCommentContents()}"></td>
+            <td th:text="${comment.getCreateTime()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+<script>
+    $("#comment-write-btn").click(function (){
+        console.log('댓글 등록 버튼 클릭');
+        const commentWriter = $("#commentWriter").val();
+        const commentContents = $("#commentContents").val();
+        const boardId = '[[${board.boardId}]]';
+        const memberId = '[[${session.LoginId}]]';
+        const commentData=JSON.stringify ({
+            commentWriter: commentWriter,
+                commentContents: commentContents,
+                boardId: boardId,
+                memberId : memberId
+        });
+        console.log(commentData)
+        $.ajax({
+            type: 'post',
+            url: '/comment/save',
+            data : commentData,
+            contentType: 'application/json',
+            data_type: 'json',
+            success: function (result) {
+                console.log(result);
+                location.reload();
+            },
+            error: function (){
+                alert('땡!!!')
+            }
+        });
+    });
+</script>
+</html>

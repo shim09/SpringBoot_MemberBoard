@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="/board/save" method="post" enctype="multipart/form-data">
+    <input type="text" name="boardTitle" placeholder="제목"><br>
+    <input type="text" name="boardWriter" placeholder="글쓴이" th:value="${session['loginEmail']}"><br>
+    <input type="text" name="boardContents" placeholder="내용"><br>
+    <input type="file" name="boardImage">
+    <input type="submit" value="작성">
+</form>
+
+</body>
+</html>

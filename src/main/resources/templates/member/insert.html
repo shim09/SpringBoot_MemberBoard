@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+
+    <script>
+
+        function findByMemberEmail() {
+            const id = document.getElementById('memberEmail').value;
+            console.log(id);
+            const checkResult = document.getElementById("id-dup-check");
+
+
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:8097/member/findByMemberEmail',
+                data: {'memberEmail': id},
+                dataType: 'text',
+                success: function (result) {
+                    console.log('ajax성공')
+                    console.log(result)
+
+                    if (result == "ok") {
+                        checkResult.innerHTML = '사용 가능한 이메일입니다.';
+                        checkResult.style.color = 'green';
+                    } else {
+                        checkResult.innerHTML = '이미 사용중인 이메일입니다.';
+                        checkResult.style.color = 'red';
+                    }
+                },
+                error: function () {
+                    alert('땡!!!')
+                }
+
+            });
+        };
+    </script>
+</head>
+<body>
+<h2> insert </h2>
+
+<form action="/member/insert" method="post" enctype="multipart/form-data">
+
+    <input  type="text" name="memberEmail" id="memberEmail" placeholder="이메일" onblur="findByMemberEmail()">
+    <span id="id-dup-check"></span>
+    <input type="text" name="memberPassword" placeholder="비밀번호">
+    <input type="text" name="memberName" placeholder="이름">
+    <input type="text" name="memberPhone" placeholder="휴대폰번호">
+    <input type="file" name="memberImage">
+    <input type="submit" value="가입하기">
+</form>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2><p th:text="${session.loginEmail}"></p> 님의 마이페이지.</h2>
+
+<<td><a th:href="@{|/member/update/${member.memberId}|}">회원정보 수정</a></td>
+
+<table>
+    <thead>
+    <tr>
+        <td>회원번호</td>
+        <td>이메일</td>
+        <td>이름</td>
+        <td>휴대폰번호</td>
+        <td>프로필</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${member.memberId}"></td>
+        <td th:text="${member.memberEmail}"></td>
+        <td th:text="${member.memberName}"></td>
+        <td th:text="${member.memberPhone}"></td>
+        <td><img th:src="@{/upload/} + ${member.memberImageName}"> </td>
+    </tr>
+    </tbody>
+
+</table>
+
+</body>
+</html>

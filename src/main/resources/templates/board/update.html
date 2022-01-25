@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+
+<form action="/board/update" name="updateForm" method="post">
+    <input type="hidden" name="boardId" th:value="${board.boardId}" id="boardId" ><br>
+    <input type="text" name="boardWriter" placeholder="작성자" th:value="${board.boardWriter}" readonly id="boardWriter"><br>
+    <input type="text" name="boardTitle"  placeholder="제목" th:value="${board.boardTitle}"  id="boardTitle"><br>
+    <input type="text" name="boardContents"  placeholder="내용" th:value="${board.boardContents}"  id="boardContents"><br>
+    <input type="button" value="수정(put)" th:onclick="boardUpdate()">
+    <input type="submit" value="수정(post)">
+</form>
+
+</body>
+</html>

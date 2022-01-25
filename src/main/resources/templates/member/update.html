@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        function update(){
+            const inputPassword = document.getElementById('memberPassword').value;
+            const memberPassword ="[[${member.memberPassword}]]";
+
+            if(inputPassword==memberPassword){
+                document.updateForm.submit();
+            }else{
+                alert("비밀번호확인");
+            }
+        }
+    </script>
+
+</head>
+<body>
+<h2> update </h2>
+
+<form action="/member/update" name="updateForm" method="post">
+    <input type="hidden" name="memberId" th:value="${member.memberId}" id="memberId">
+    이메일 : <input type="text" name="memberEmail" th:value="${member.memberEmail}" id="memberEmail" readonly>
+    휴대폰 번호 : <input type="text" name="memberPhone" th:value="${member.memberPhone}" id="memberPhone">
+    비밀번호 : <input type="password" name="memberPassword" th:value="${member.memberPassword}" id="memberPassword">
+    이름 : <input type="text" name="memberName" th:value="${member.memberName}" id="memberName">
+    <input type="button" value="수정" th:onclick="update()">
+</form>
+
+</body>
+</html>
